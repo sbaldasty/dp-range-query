@@ -8,16 +8,7 @@ class Node:
     high: float
     cnt: int
 
-lst = []
-for x in [128, 64, 32, 16, 8, 4, 2, 1]:
-    for y in range(0, 128, x):
-        lst.append(Node(y, x + y - 1, 0))
 
-adult = pd.read_csv('https://github.com/jnear/cs3110-data-privacy/raw/main/homework/adult_with_pii.csv')
-df = adult['Age']
-for e in df:
-    print(e)
-#    for n in lst:
     
 
 def query(data: list[Node], a: float, b: float) -> list[Node]:
@@ -39,3 +30,29 @@ def query(data: list[Node], a: float, b: float) -> list[Node]:
 #cases = [(1, 125)]
 #for a, b in cases:
 #    print(a, b, query(lst, a, b))
+
+def counts(tree: list[Node],df) -> list[Node]:
+    # Big-O(N)
+    i= len(tree)-1
+    while i >=0:
+        if tree[i].low == tree[i].high:
+            tree[i].cnt= df[df == tree[i].low].count()
+        else:
+            tree[i].cnt +=tree[2*i+1].cnt
+            tree[i].cnt +=tree[2*i+2].cnt
+        i -=1
+    return tree
+
+if __name__ =='__main__':
+
+    #1. built a tree
+    lst = []
+    for x in [128, 64, 32, 16, 8, 4, 2, 1]:
+        for y in range(0, 128, x):
+            # set our base count values to 0 "null"
+            lst.append(Node(y, x + y - 1, 0))
+
+    #2. load the dataset to a dataframe
+    adult = pd.read_csv('https://github.com/jnear/cs3110-data-privacy/raw/main/homework/adult_with_pii.csv')
+    df = adult['Age']
+            
