@@ -23,14 +23,6 @@ def query(data: list[Node], a: float, b: float) -> list[Node]:
             break
     return result
 
-#def counts(data: list[Node], a: float, b: float) -> list[Node]:
-#    s = 0
-#    for e in query(data, a, b):
-#
-#cases = [(1, 125)]
-#for a, b in cases:
-#    print(a, b, query(lst, a, b))
-
 def counts(tree: list[Node],df) -> list[Node]:
     # Big-O(N)
     i= len(tree)-1
@@ -55,4 +47,3 @@ if __name__ =='__main__':
     #2. load the dataset to a dataframe
     adult = pd.read_csv('https://github.com/jnear/cs3110-data-privacy/raw/main/homework/adult_with_pii.csv')
     df = adult['Age']
-            
