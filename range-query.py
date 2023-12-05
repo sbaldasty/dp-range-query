@@ -5,10 +5,15 @@ import numpy as np
 
 @dataclass
 class Node:
-    low: float
-    high: float
+    low: int
+    high: int
     cnt: int
     noisy_cnt: float=0
+
+@dataclass
+class Solution:
+    addition_nodes: list[Node]
+    subtraction_nodes: list[Node]
 
 # epsilon-DP mechanism
 def laplace_mech(v, sensitivity, epsilon):
@@ -53,7 +58,7 @@ def counts(tree: list[Node],df) -> list[Node]:
         i -=1
     return tree
 
-def noisy_counts(tree: list[Node],df) -> list[Node]:
+def noisy_counts(tree: list[Node]) -> list[Node]:
     # Big-O(N)
     i= len(tree)-1
     while i >=0:
@@ -61,14 +66,25 @@ def noisy_counts(tree: list[Node],df) -> list[Node]:
         i -=1
     return tree
 
+def build_tree(lower_bound: int, upper_bound: int):
+    rng = upper_bound - lower_bound
+    pot = 1
+    lst = [pot]
+    while pot < rng:
+        pot *= 2
+        lst.insert(0, pot)
+
+    tree = []
+    for x in lst:
+        for y in range(lower_bound, lower_bound + pot, x):
+            tree.append(Node(y, x + y - 1, 0))
+
+    return tree
+
 if __name__ =='__main__':
 
     #1. built a tree
-    lst = []
-    for x in [128, 64, 32, 16, 8, 4, 2, 1]:
-        for y in range(0, 128, x):
-            # set our base count values to 0 "null"
-            lst.append(Node(y, x + y - 1, 0))
+    lst = build_tree(0, 100)
 
     #2. load the dataset to a dataframe
     adult = pd.read_csv('https://github.com/jnear/cs3110-data-privacy/raw/main/homework/adult_with_pii.csv')
@@ -77,7 +93,7 @@ if __name__ =='__main__':
     #3. populate the tree
     tree=counts(lst,df)
     #4. populate the noisy tree
-    noisy_tree = noisy_counts(tree, df)
+    noisy_tree = noisy_counts(tree)
     #5. query samples, testing section
     # print the root node count, should return the whole df count
     print("count: ",query(tree, 0,128))
