@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-import math
 import pandas as pd
 import numpy as np
+
+from dataclasses import dataclass
 
 @dataclass
 class Node:
@@ -58,11 +58,12 @@ def counts(tree: list[Node],df) -> list[Node]:
         i -=1
     return tree
 
-def noisy_counts(tree: list[Node]) -> list[Node]:
+def noisy_counts(tree: list[Node], epsilon: float) -> list[Node]:
     # Big-O(N)
     i= len(tree)-1
+    e = epsilon / np.log2(len(tree))
     while i >=0:
-        tree[i].noisy_cnt=laplace_mech(tree[i].cnt,1, (1/np.log2(128)))
+        tree[i].noisy_cnt=laplace_mech(tree[i].cnt,1, e)
         i -=1
     return tree
 
@@ -93,7 +94,7 @@ if __name__ =='__main__':
     #3. populate the tree
     tree=counts(lst,df)
     #4. populate the noisy tree
-    noisy_tree = noisy_counts(tree)
+    noisy_tree = noisy_counts(tree, 1.0)
     #5. query samples, testing section
     # print the root node count, should return the whole df count
     print("count: ",query(tree, 0,128))
