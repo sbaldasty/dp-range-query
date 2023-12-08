@@ -9,11 +9,6 @@ class Node:
     cnt: int
     noisy_cnt: float=0
 
-@dataclass
-class Solution:
-    addition_nodes: list[Node]
-    subtraction_nodes: list[Node]
-
 # epsilon-DP mechanism
 def laplace_mech(v, sensitivity, epsilon):
     return v + np.random.laplace(loc=0, scale=sensitivity / epsilon)
@@ -96,8 +91,6 @@ def epsilon_gen(num):
 
 if __name__ =='__main__':
     epsilons = epsilon_gen(50)
-    print(epsilons)
-    exit(0)
     #1. built a tree
     lst = build_tree(0, 100)
 
@@ -113,16 +106,3 @@ if __name__ =='__main__':
     # print the root node count, should return the whole df count
     print("count: ",query(tree, 0,128))
     print("noisy_count: ",noisy_query(noisy_tree, 0, 128))
-    #
-    # print(query(tree, 1, 1))
-    # print(df[df==1].count())
-    #
-    # print(query(tree, 0, 50))
-    # print(df[(df >= 0) & (df <= 50)].count())
-    #
-    # print(query(tree, 0, 90))
-    # print(df[(df >= 0) & (df <= 90)].count())
-    #
-    # # test DP query on our range tree
-    # x=laplace_mech(query(tree, 0, 90), 1, 0.1) # count query sens =1/ epsilon=1
-    # print("noisy count ",x)
