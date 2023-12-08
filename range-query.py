@@ -18,6 +18,8 @@ class Solution:
 def laplace_mech(v, sensitivity, epsilon):
     return v + np.random.laplace(loc=0, scale=sensitivity / epsilon)
 
+# The query function performs the query using the query_nodes function
+# on a non-noisy tree, so it receives the counts from the cnt attribute of the node
 def query(data: list[Node], a: float, b: float) -> int:
     nodes= query_nodes(data, a, b)
     count=0
@@ -25,6 +27,8 @@ def query(data: list[Node], a: float, b: float) -> int:
         count += n.cnt
     return count
 
+# The noisy_query function performs the query using the query_nodes function
+# on a noisy tree, so it receives the counts from the noisy_cnt attribute of the node
 def noisy_query(data: list[Node], a: float, b: float) -> int:
     nodes= query_nodes(data, a, b)
     count=0
@@ -32,6 +36,8 @@ def noisy_query(data: list[Node], a: float, b: float) -> int:
         count += n.noisy_cnt
     return count
 
+# The query_nodes function performs the query provided on each node of the tree,
+# returning the amount of items within the range provided in the query
 def query_nodes(data: list[Node], a: float, b: float) -> list[Node]:
     result = []
     for e in data:
@@ -44,6 +50,8 @@ def query_nodes(data: list[Node], a: float, b: float) -> list[Node]:
             break
     return result
 
+# The counts function calculates what the count should be for each node
+# The count is the amount of items within the range of that node
 def counts(tree: list[Node],df) -> list[Node]:
     # Big-O(N)
     i= len(tree)-1
@@ -57,6 +65,7 @@ def counts(tree: list[Node],df) -> list[Node]:
         i -=1
     return tree
 
+# The noisy_counts function adds noise to the count of each node in the tree
 def noisy_counts(tree: list[Node], epsilon: float) -> list[Node]:
     # Big-O(N)
     i= len(tree)-1
