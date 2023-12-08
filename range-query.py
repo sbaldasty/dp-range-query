@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-
 from dataclasses import dataclass
 
 @dataclass
@@ -82,8 +81,12 @@ def build_tree(lower_bound: int, upper_bound: int):
 
     return tree
 
-if __name__ =='__main__':
+def epsilon_gen(num):
+    return np.linspace(0.0000000000000001,1,num)
 
+if __name__ =='__main__':
+    epsilons = epsilon_gen(50)
+    exit(0)
     #1. built a tree
     lst = build_tree(0, 100)
 
