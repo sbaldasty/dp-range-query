@@ -82,10 +82,12 @@ def build_tree(lower_bound: int, upper_bound: int):
     return tree
 
 def epsilon_gen(num):
-    return np.linspace(0.000001,1,num)
+    epsilons = np.geomspace(0.2,1,num)
+    return np.delete(epsilons, 0)
 
 if __name__ =='__main__':
     epsilons = epsilon_gen(50)
+    print(epsilons)
     exit(0)
     #1. built a tree
     lst = build_tree(0, 100)
